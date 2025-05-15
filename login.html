@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login Page</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(Laptop\ and\ papers\ aesthetic.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 350px;
+    height: 250px;
+    text-align: center;
+    align-items: center;
+  }
+  h2 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  /* CSS Animation for button click */
+  @keyframes buttonClick {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+  .animate-click {
+    animation: buttonClick 0.3s ease forwards;
+  }
+  /* Fade in animation for container */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .login-container {
+    animation: fadeIn 0.8s ease forwards;
+  }
+  /* Message animation */
+  @keyframes messageFade {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .message {
+    margin-top: 1rem;
+    color: green;
+    font-weight: bold;
+    opacity: 0;
+  }
+  .message.show {
+    animation: messageFade 3s forwards;
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" id="loginButton">Log In</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+
+<script>
+  // Retrieve stored username preference and set input value
+  document.addEventListener('DOMContentLoaded', () => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      document.getElementById('username').value = storedUsername;
+    }
+  });
+
+  const loginForm = document.getElementById('loginForm');
+  const loginButton = document.getElementById('loginButton');
+  const messageDiv = document.getElementById('message');
+
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Store username in localStorage
+    const username = document.getElementById('username').value;
+    localStorage.setItem('username', username);
+
+    // Trigger button animation
+    loginButton.classList.add('animate-click');
+
+    // Show success message with animation
+    messageDiv.textContent = `Welcome back, ${username}!`;
+    messageDiv.classList.add('show');
+
+    // Remove animation class after animation ends to allow retrigger
+    loginButton.addEventListener('animationend', () => {
+      loginButton.classList.remove('animate-click');
+    }, { once: true });
+
+    // Remove message after animation ends
+    messageDiv.addEventListener('animationend', () => {
+      messageDiv.classList.remove('show');
+      messageDiv.textContent = '';
+    }, { once: true });
+
+    // Clear password field for security
+    document.getElementById('password').value = '';
+  });
+</script>
+</body>
+</html>
